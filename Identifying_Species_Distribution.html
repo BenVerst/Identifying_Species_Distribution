@@ -553,23 +553,29 @@ for (i in 1:5) {
 <li>Percent suitable area by region<br />
 </li>
 </ul>
-<pre class="r"><code>map_data &lt;- merge(wc_eez_vect, area_per, by = &quot;rgn_key&quot;)
+<pre class="r"><code># Merge data on oyster suitable area with EEZ region data
+map_data &lt;- merge(wc_eez_vect, area_per, by = &quot;rgn_key&quot;)
+
+# Convert the merged data to a spatial data frame
 map_data_sf &lt;- st_as_sf(map_data)
+
+# Create separate spatial data frames for total suitable area and percentage suitable area
 suitable_area &lt;- map_data_sf
 percent_suitable_area &lt;- map_data_sf
 
+# Filter US states data to include only California, Oregon, and Washington
 west_coast &lt;- us_states %&gt;%
-  filter(NAME %in% c(&#39;California&#39;,&#39;Oregon&#39;,&#39;Washington&#39;)) %&gt;%
+  filter(NAME %in% c(&#39;California&#39;, &#39;Oregon&#39;, &#39;Washington&#39;)) %&gt;%
   st_transform(crs = st_crs(suitable_area))
 
 west_coast2 &lt;- us_states %&gt;%
-  filter(NAME %in% c(&#39;California&#39;,&#39;Oregon&#39;,&#39;Washington&#39;)) %&gt;%
+  filter(NAME %in% c(&#39;California&#39;, &#39;Oregon&#39;, &#39;Washington&#39;)) %&gt;%
   st_transform(crs = st_crs(percent_suitable_area))
 
-# set basemap
+# Set the basemap style to &quot;natural&quot;
 tmap_style(&quot;natural&quot;)
 
-# map data with area and percent of area as the fill
+# Map 1: Suitable Area for Oysters by EEZ Region
 tm_shape(suitable_area) +
   tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
   tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
@@ -578,24 +584,27 @@ tm_shape(suitable_area) +
     title.size = 1.3,
     title = &quot;Suitable Area for Oysters by EEZ Region&quot;,
     title.position = c(&quot;center&quot;, &quot;top&quot;),
-    inner.margins = c(.05, 0, .17, 0)) +
+    inner.margins = c(.05, 0, .17, 0)
+  ) +
   tm_fill(&quot;area&quot;, title = &quot;Total Suitable Area&quot;, palette = &quot;blues&quot;) +
   tm_borders(col = &quot;brown&quot;) +
-  tm_shape(west_coast) +  # plot west coast basemap
+  tm_shape(west_coast) +
   tm_polygons()</code></pre>
 <p><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<pre class="r"><code>tm_shape(percent_suitable_area) +
+<pre class="r"><code># Map 2: Percent of Area Suitable by EEZ Region
+tm_shape(percent_suitable_area) +
   tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
   tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
-    tm_layout(
+  tm_layout(
     asp = 1.3,
     title.size = 1.3,
     title = &quot;Percent of Area Suitable by EEZ Region&quot;,
     title.position = c(&quot;center&quot;, &quot;top&quot;),
-    inner.margins = c(.05, 0, .17, 0)) +
+    inner.margins = c(.05, 0, .17, 0)
+  ) +
   tm_fill(&quot;area_percent&quot;, title = &quot;Percent of Area Suitable&quot;, palette = &quot;greens&quot;) +
   tm_borders(col = &quot;magenta&quot;) +
-  tm_shape(west_coast2) + #plot west coast basemap
+  tm_shape(west_coast2) +
   tm_polygons()</code></pre>
 <p><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 </div>
