@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Benjamin Versteeg" />
+
+<meta name="date" content="2023-12-15" />
+
+<title>EDS 223: assignment 4</title>
+
+<script src="Identifying_Species_Distribution_files/header-attrs-2.25/header-attrs.js"></script>
+<script src="Identifying_Species_Distribution_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Identifying_Species_Distribution_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="Identifying_Species_Distribution_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Identifying_Species_Distribution_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Identifying_Species_Distribution_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Identifying_Species_Distribution_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="Identifying_Species_Distribution_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Identifying_Species_Distribution_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Identifying_Species_Distribution_files/navigation-1.1/tabsets.js"></script>
+<link href="Identifying_Species_Distribution_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Identifying_Species_Distribution_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">EDS 223: assignment 4</h1>
+<h4 class="author">Benjamin Versteeg</h4>
+<h4 class="date">2023-12-15</h4>
+
+</div>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Marine aquaculture has the potential to play an important role in the
+global food supply as a more sustainable protein option than land-based
+meat production.<a href="#fn1" class="footnote-ref"
+id="fnref1"><sup>1</sup></a> <a
+href="https://www.nature.com/articles/s41559-017-0257-9">Gentry et
+al.</a> mapped the potential for marine aquaculture globally based on
+multiple constraints, including ship traffic, dissolved oxygen, bottom
+depth .<a href="#fn2" class="footnote-ref"
+id="fnref2"><sup>2</sup></a></p>
+<p>We are tasked with determining which Exclusive Economic Zones (EEZ)
+on the West Coast of the US are best suited to developing marine
+aquaculture for several species of oysters.<br />
+</p>
+<p>Based on previous research, we know that oysters needs the following
+conditions for optimal growth:<br />
+</p>
+<ul>
+<li>sea surface temperature: 11-30°C<br />
+</li>
+<li>depth: 0-70 meters below sea level</li>
+</ul>
+<div id="learning-objectives" class="section level5">
+<h5>Learning objectives:</h5>
+<ul>
+<li>combining vector/raster data<br />
+</li>
+<li>resampling raster data<br />
+</li>
+<li>masking raster data<br />
+</li>
+<li>map algebra<br />
+</li>
+</ul>
+</div>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<div id="sea-surface-temperature" class="section level4">
+<h4>Sea Surface Temperature</h4>
+<p>We will use average annual sea surface temperature (SST) from the
+years 2008 to 2012 to characterize the average sea surface temperature
+within the region. The data we are working with was originally generated
+from <a
+href="https://coralreefwatch.noaa.gov/product/5km/index_5km_ssta.php">NOAA’s
+5km Daily Global Satellite Sea Surface Temperature Anomaly v3.1</a>.</p>
+</div>
+<div id="bathymetry" class="section level4">
+<h4>Bathymetry</h4>
+<p>To characterize the depth of the ocean we will use the <a
+href="https://www.gebco.net/data_and_products/gridded_bathymetry_data/#area">General
+Bathymetric Chart of the Oceans (GEBCO)</a>.<a href="#fn3"
+class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+</div>
+<div id="exclusive-economic-zones" class="section level4">
+<h4>Exclusive Economic Zones</h4>
+<p>We will be designating maritime boundaries using Exclusive Economic
+Zones off of the west coast of US from <a
+href="https://www.marineregions.org/eez.php">Marineregions.org</a>.</p>
+</div>
+</div>
+<div id="preparing-the-data" class="section level2">
+<h2>Preparing the data</h2>
+<p>To start, we need to load all necessary data and make sure it has the
+coordinate reference system.</p>
+<p>Steps:</p>
+<ul>
+<li><p>load necessary packages and set path </p></li>
+<li><p>read in the shapefile for the West Coast EEZ
+(<code>wc_regions_clean.shp</code>)<br />
+</p></li>
+<li><p>read in SST rasters</p>
+<ul>
+<li><code>average_annual_sst_2008.tif</code><br />
+</li>
+<li><code>average_annual_sst_2009.tif</code><br />
+</li>
+<li><code>average_annual_sst_2010.tif</code><br />
+</li>
+<li><code>average_annual_sst_2011.tif</code><br />
+</li>
+<li><code>average_annual_sst_2012.tif</code><br />
+</li>
+</ul></li>
+<li><p>combine SST rasters into a raster stack<br />
+</p></li>
+<li><p>read in bathymetry raster (<code>depth.tif)</code><br />
+</p></li>
+</ul>
+<pre class="r"><code># load in necessary libraries
+library(tidyverse)
+library(sf)
+library(stars)
+library(raster)
+library(terra)
+library(tmap)
+library(ggplot2)
+library(here)
+library(tmaptools)
+library(spData)</code></pre>
+<pre class="r"><code># read in sea surface temperature data
+aa_sst_08 &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;average_annual_sst_2008.tif&quot;))
+aa_sst_09 &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;average_annual_sst_2009.tif&quot;))
+aa_sst_10 &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;average_annual_sst_2010.tif&quot;))
+aa_sst_11 &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;average_annual_sst_2011.tif&quot;))
+aa_sst_12 &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;average_annual_sst_2012.tif&quot;))
+
+class(aa_sst_08)</code></pre>
+<pre><code>## [1] &quot;SpatRaster&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;terra&quot;</code></pre>
+<pre class="r"><code># combine sst data 
+aa_sst &lt;- list(aa_sst_08, aa_sst_09, aa_sst_10, aa_sst_11, aa_sst_12)
+
+sst_rast &lt;- rast(aa_sst)
+
+# crs
+crs(sst_rast)</code></pre>
+<pre><code>## [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;unknown\&quot;,\n        ELLIPSOID[\&quot;WGS84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1,\n                ID[\&quot;EPSG\&quot;,9001]]]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n            ID[\&quot;EPSG\&quot;,9122]]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
+<pre class="r"><code># load in bathymetry data
+depth_rast &lt;- rast(here(&quot;data&quot;, &quot;data&quot;, &quot;depth.tif&quot;))</code></pre>
+<p>Next, we need process the SST and depth data so that they can be
+combined. In this case the SST and depth data have slightly different
+resolutions, extents, and positions. We don’t want to change the
+underlying depth data, so we will need to resample to match the SST data
+using the nearest neighbor approach.</p>
+<p>Steps:</p>
+<ul>
+<li>find the mean SST from 2008-2012<br />
+</li>
+<li>convert SST data from Kelvin to Celsius<br />
+</li>
+<li>crop depth raster to match the extent of the SST raster<br />
+</li>
+<li>check that the depth and SST match in resolution, extent, and
+coordinate reference system</li>
+</ul>
+<pre class="r"><code># find the mean SST from 2008-2012
+sst_mean &lt;-  mean(sst_rast)
+
+# convert the mean from Kelvin to Celsius
+sst_mean_c &lt;- (sst_mean - 273.15)</code></pre>
+<pre class="r"><code># crop the depth data to sst raster extent
+crop_depth_rast &lt;- crop(depth_rast, sst_mean_c)
+
+# match the resolultion of both rasters
+crop_depth_rast_res &lt;- resample(x = crop_depth_rast, 
+                                y = sst_mean_c, 
+                                method = &quot;near&quot;)</code></pre>
+<pre class="r"><code># check CRS
+crs(sst_mean_c) == crs(crop_depth_rast_res)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># stack the depth and sea surface temperature rasters
+sst_depth_list &lt;- list(sst_mean_c, crop_depth_rast_res)
+sst_depth_rast &lt;- rast(sst_depth_list)</code></pre>
+</div>
+<div id="finding-suitable-locations" class="section level2">
+<h2>Finding suitable locations</h2>
+<p>In order to find suitable locations for marine aquaculture, we’ll
+need to find locations that are suitable in terms of both SST and
+depth.</p>
+<p>Steps:</p>
+<ul>
+<li>reclassify SST and depth data into locations that are suitable for
+oysters<br />
+</li>
+<li>find locations that satisfy both SST and depth conditions<br />
+</li>
+</ul>
+<pre class="r"><code># create a reclassification matrix for valid sst locations
+sst_rcl &lt;- matrix(c(-Inf, 11, NA, 
+                    11, 30, 1,
+                    30, Inf, NA),
+                  ncol = 3, 
+                  byrow = TRUE)
+
+# set NA for non-suitable sst
+sst_suit &lt;- classify(sst_mean_c, rcl = sst_rcl)
+
+# create a reclassification matrix for valid depth locations
+depth_rcl &lt;- matrix(c(-Inf, -70, NA, 
+                      -70, 0, 1,
+                    0, Inf, NA),
+                  ncol = 3, 
+                  byrow = TRUE)
+
+# set NA for non-suitable depth
+depth_suit &lt;- classify(crop_depth_rast_res, rcl = depth_rcl)
+
+# crop sst and depth data based on mask
+sst_oyster &lt;- crop(sst_mean_c, sst_suit)
+depth_oyster &lt;- mask(crop_depth_rast_res, depth_suit)</code></pre>
+<pre class="r"><code># combine the rasters
+oyster_list &lt;- list(depth_suit, sst_suit)
+sst_depth_oyster &lt;- rast(oyster_list)
+
+# overlay the data
+oyster_fun &lt;- function(x, y){return(x * y)}
+sst_depth_suitable &lt;- lapp(sst_depth_oyster,
+                               fun = oyster_fun)</code></pre>
+</div>
+<div id="determining-the-most-suitable-eez" class="section level2">
+<h2>Determining the most suitable EEZ</h2>
+<p>We want to determine the total suitable area within each EEZ in order
+to rank zones by priority. To do so, we need to find the total area of
+suitable locations within each EEZ.</p>
+<p>Steps:</p>
+<ul>
+<li>select suitable cells within West Coast EEZs<br />
+</li>
+<li>find area of grid cells<br />
+</li>
+<li>find the total suitable area within each EEZ<br />
+</li>
+<li>find the percentage of each zone that is suitable<br />
+</li>
+</ul>
+<pre class="r"><code># load in data
+wc_eez_vect &lt;- vect(here(&quot;data&quot;, &quot;data&quot;, &quot;wc_regions_clean.shp&quot;))
+
+
+wc_eez_vect_area &lt;- shapefile(here(&quot;data&quot;, &quot;data&quot;, &quot;wc_regions_clean.shp&quot;))
+
+wc_eez_vect_area$Area &lt;- area(wc_eez_vect_area)</code></pre>
+<pre class="r"><code>wc_eez_df &lt;- as_tibble(wc_eez_vect_area) |&gt; 
+  dplyr::select(rgn_key, area_km2)
+
+
+for (i in 1:4) {
+  print(paste(wc_eez_df[i, 1, 1], &quot;has an area of&quot;, round(wc_eez_df[i, 2, 1]), &quot;km^2.&quot;))
+}</code></pre>
+<pre><code>## [1] &quot;OR has an area of 179994 km^2.&quot;
+## [1] &quot;CA-N has an area of 164379 km^2.&quot;
+## [1] &quot;CA-C has an area of 202738 km^2.&quot;
+## [1] &quot;CA-S has an area of 206861 km^2.&quot;</code></pre>
+<pre class="r"><code># convert to raster
+rast_nam &lt;- names(wc_eez_vect)
+
+wc_eez_rast &lt;- lapply(rast_nam, function(x) {
+  rasterize(wc_eez_vect, sst_depth_suitable,
+    field = x,
+    touches = TRUE)})
+
+# merge objects into a single raster
+wc_eez_rast &lt;- do.call(&quot;c&quot;, wc_eez_rast)</code></pre>
+<pre class="r"><code># use suitable locations to mask the wc_eez_rast
+wc_eez_rast &lt;- project(wc_eez_rast, sst_depth_suitable)
+
+# find the area of raster cell
+cell_area &lt;- cellSize(wc_eez_rast, unit = &quot;km&quot;)</code></pre>
+<pre class="r"><code># mask the suitable areas with the wc_eez_raster
+wc_eez_suitable &lt;- mask(wc_eez_rast$rgn, sst_depth_suitable)
+
+# extract the areas
+area_suitable &lt;- expanse(wc_eez_suitable, unit = &quot;km&quot;)
+
+print(paste0(&quot;Total suitable area for oysters based on sea surface temperature and depth: &quot;, round(area_suitable[2]), &quot; km^2.&quot;))</code></pre>
+<pre><code>## [1] &quot;Total suitable area for oysters based on sea surface temperature and depth: 11527 km^2.&quot;</code></pre>
+<pre class="r"><code># extract area per suitable region and turn into dataframe
+area_region &lt;- expanse(wc_eez_suitable, unit = &quot;km&quot;, byValue = TRUE)
+area_region &lt;- as_tibble(area_region)
+
+# add a region column
+region &lt;- tribble(
+  ~region, ~rgn_key, 
+  &quot;Central California&quot;, &quot;CA-C&quot;,
+  &quot;Northern California&quot;, &quot;CA-N&quot;,
+  &quot;Oregon&quot;, &quot;OR&quot;,
+  &quot;Southern California&quot;, &quot;CA-S&quot;,
+  &quot;Washington&quot;, &quot;WA&quot;)
+
+area_region &lt;- cbind(area_region, region)
+
+# print data
+for (i in 1:5) {
+  print(paste0(&quot;Suitable area for oysters in the &quot;, area_region$region[i], &quot; region: &quot;, round(area_region$area[i]), &quot; km^2.&quot;))
+}</code></pre>
+<pre><code>## [1] &quot;Suitable area for oysters in the Central California region: 4070 km^2.&quot;
+## [1] &quot;Suitable area for oysters in the Northern California region: 178 km^2.&quot;
+## [1] &quot;Suitable area for oysters in the Oregon region: 1074 km^2.&quot;
+## [1] &quot;Suitable area for oysters in the Southern California region: 3812 km^2.&quot;
+## [1] &quot;Suitable area for oysters in the Washington region: 2393 km^2.&quot;</code></pre>
+<pre class="r"><code># calculate percent of each area in suitable region
+area_per &lt;- left_join(area_region, wc_eez_df, by = &quot;rgn_key&quot;)
+area_per &lt;- area_per |&gt; 
+  mutate(&quot;area_percent&quot; = area/area_km2 * 100)
+
+# print results
+for (i in 1:5) {
+  print(paste0(&quot;Percent of suitable area for oysters in the &quot;, area_per$region[i], &quot; region: &quot;, round(area_per$area_percent[i], 2), &quot;%.&quot;))
+}</code></pre>
+<pre><code>## [1] &quot;Percent of suitable area for oysters in the Central California region: 2.01%.&quot;
+## [1] &quot;Percent of suitable area for oysters in the Northern California region: 0.11%.&quot;
+## [1] &quot;Percent of suitable area for oysters in the Oregon region: 0.6%.&quot;
+## [1] &quot;Percent of suitable area for oysters in the Southern California region: 1.84%.&quot;
+## [1] &quot;Percent of suitable area for oysters in the Washington region: 3.58%.&quot;</code></pre>
+</div>
+<div id="visualizing-the-results" class="section level2">
+<h2>Visualizing the results</h2>
+<p>Now that we have results, we need to present them!</p>
+<p>Maps to create:</p>
+<ul>
+<li>Total suitable area by region<br />
+</li>
+<li>Percent suitable area by region<br />
+</li>
+</ul>
+<pre class="r"><code>map_data &lt;- merge(wc_eez_vect, area_per, by = &quot;rgn_key&quot;)
+map_data_sf &lt;- st_as_sf(map_data)
+suitable_area &lt;- map_data_sf
+percent_suitable_area &lt;- map_data_sf
+
+west_coast &lt;- us_states %&gt;%
+  filter(NAME %in% c(&#39;California&#39;,&#39;Oregon&#39;,&#39;Washington&#39;)) %&gt;%
+  st_transform(crs = st_crs(suitable_area))
+
+west_coast2 &lt;- us_states %&gt;%
+  filter(NAME %in% c(&#39;California&#39;,&#39;Oregon&#39;,&#39;Washington&#39;)) %&gt;%
+  st_transform(crs = st_crs(percent_suitable_area))
+
+# set basemap
+tmap_style(&quot;natural&quot;)
+
+# map data with area and percent of area as the fill
+tm_shape(suitable_area) +
+  tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
+  tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
+  tm_layout(
+    asp = 1.3,
+    title.size = 1.3,
+    title = &quot;Suitable Area for Oysters by EEZ Region&quot;,
+    title.position = c(&quot;center&quot;, &quot;top&quot;),
+    inner.margins = c(.05, 0, .17, 0)) +
+  tm_fill(&quot;area&quot;, title = &quot;Total Suitable Area&quot;, palette = &quot;blues&quot;) +
+  tm_borders(col = &quot;brown&quot;) +
+  tm_shape(west_coast) +  # plot west coast basemap
+  tm_polygons()</code></pre>
+<p><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(percent_suitable_area) +
+  tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
+  tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
+    tm_layout(
+    asp = 1.3,
+    title.size = 1.3,
+    title = &quot;Percent of Area Suitable by EEZ Region&quot;,
+    title.position = c(&quot;center&quot;, &quot;top&quot;),
+    inner.margins = c(.05, 0, .17, 0)) +
+  tm_fill(&quot;area_percent&quot;, title = &quot;Percent of Area Suitable&quot;, palette = &quot;greens&quot;) +
+  tm_borders(col = &quot;magenta&quot;) +
+  tm_shape(west_coast2) + #plot west coast basemap
+  tm_polygons()</code></pre>
+<p><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+</div>
+<div id="broadening-the-workflow" class="section level2">
+<h2>Broadening the workflow!</h2>
+<p>Now that we’ve worked through the solution for one group of species,
+let’s update the workflow to work for other species. Let’s create a
+function that would allow us to reproduce our results for other species.
+The function should be able to do the following:<br />
+</p>
+<ul>
+<li>accept temperature and depth ranges and species name as inputs<br />
+</li>
+<li>create maps of total suitable area and percent suitable area per EEZ
+with the species name in the title<br />
+</li>
+</ul>
+<p>We can find information on species depth and temperature requirements
+on <a href="https://www.sealifebase.ca/search.php">SeaLifeBase</a>.
+Remember, we are thinking about the potential for marine aquaculture, so
+these species should have some reasonable potential for commercial
+consumption.</p>
+<pre class="r"><code># create function
+suitable_range_fun &lt;- function(temp_min, temp_max, depth_min, depth_max, species){
+  sst_rcl_sp &lt;- matrix(c(-Inf, temp_min, NA, 
+                         temp_min, temp_max, 1,
+                         temp_max, Inf, NA),
+                       ncol = 3, 
+                       byrow = TRUE)
+  
+  sst_suit_sp &lt;- classify(sst_mean_c, sst_rcl_sp)
+  
+    
+  depth_rcl_sp &lt;- matrix(c(-Inf, depth_max, NA,
+                           depth_max, depth_min, 1,
+                           depth_min, Inf, NA),
+                         ncol = 3, 
+                         byrow = TRUE)
+    
+  depth_suit_sp &lt;- classify(crop_depth_rast_res, 
+                         rcl = depth_rcl_sp)
+    
+  sst_crop_sp &lt;- crop(sst_mean_c, sst_suit)
+  depth_mask_sp &lt;- mask(crop_depth_rast_res, depth_suit_sp)
+  depth_suit_sp &lt;- project(depth_suit_sp, crs(sst_suit_sp))
+  list_suit_sp &lt;- list(depth_suit_sp, sst_suit_sp)
+  sst_depth_suit_sp &lt;- rast(list_suit_sp)
+  suitable_sp_fun &lt;- function(x, y){return(x * y)}
+  sst_depth_suitable_sp &lt;- lapp(sst_depth_suit_sp,
+                               fun = suitable_sp_fun)
+  wc_eez_suitable_sp &lt;- mask(wc_eez_rast$rgn, 
+                            sst_depth_suitable_sp)
+  area_suitable_sp &lt;- expanse(wc_eez_suitable_sp, unit = &quot;km&quot;)
+  
+  print(paste0(&quot;Total suitable area for &quot;, species, &quot; based on sea surface temperature and depth: &quot;,
+                 round(area_suitable_sp), &quot; km^2.&quot;))
+  
+  
+  area_region_sp &lt;- expanse(wc_eez_suitable_sp, unit = &quot;km&quot;, byValue = TRUE)
+  area_region_sp &lt;- as_tibble(area_region_sp)
+  area_region_sp &lt;- cbind(area_region_sp, region)
+  
+  for (i in 1:5) {
+  print(paste0(&quot;Suitable area for &quot;, species, &quot; in the &quot;, area_region_sp$region[i], &quot; region: &quot;,
+               round(area_region_sp$area[i]), &quot; km^2.&quot;))
+}
+    
+  
+  area_per_sp &lt;- left_join(area_region_sp, wc_eez_df, by = &quot;rgn_key&quot;)
+  area_per_sp &lt;- area_per_sp |&gt; 
+    mutate(&quot;area_percent&quot; = area/area_km2 * 100)
+    
+  for (i in 1:5) {
+  print(paste0(&quot;Suitable percent area for &quot;, species, &quot; in the &quot;, area_region_sp$region[i], &quot; region: &quot;,
+               round(area_per_sp$area_percent[i], 2), &quot;%&quot;))
+}
+    
+  
+  map_data_sp &lt;- merge(wc_eez_vect, area_per_sp, by = &quot;rgn_key&quot;)
+  map_data_sp_sf &lt;- st_as_sf(map_data_sp)
+  
+  suitable_area_sp &lt;- map_data_sp_sf
+  percent_suitable_area_sp &lt;- map_data_sp_sf
+  
+  print(paste0(&quot;Suitable Area for &quot;, species, &quot; by EEZ Region&quot;))
+  
+  
+map1 &lt;- tm_shape(suitable_area_sp) +
+  tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
+  tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
+  tm_layout(
+    asp = 1.3,
+    title.size = 1.3,
+    title = &quot;Suitable Area for Oysters by EEZ Region&quot;,
+    title.position = c(&quot;center&quot;, &quot;top&quot;),
+    inner.margins = c(.05, 0, .17, 0)) +
+  tm_fill(&quot;area&quot;, title = &quot;Total Suitable Area&quot;, palette = &quot;blues&quot;) +
+  tm_borders(col = &quot;brown&quot;) +
+  tm_shape(west_coast) +
+  tm_polygons()
+
+
+
+map2 &lt;- tm_shape(percent_suitable_area_sp) +
+  tm_compass(type = &quot;arrow&quot;, position = c(&quot;right&quot;, &quot;bottom&quot;), size = 3) +
+  tm_scalebar(breaks = c(0, 100, 200, 300), position = c(&quot;left&quot;, &quot;bottom&quot;), text.size = 1, width = 10) +
+    tm_layout(
+    asp = 1.3,
+    title.size = 1.3,
+    title = &quot;Percent of Area Suitable by EEZ Region&quot;,
+    title.position = c(&quot;center&quot;, &quot;top&quot;),
+    inner.margins = c(.05, 0, .17, 0)) +
+  tm_fill(&quot;area_percent&quot;, title = &quot;Percent of Area Suitable&quot;, palette = &quot;greens&quot;) +
+  tm_borders(col = &quot;magenta&quot;) +
+  tm_shape(west_coast2) +
+  tm_polygons()
+  
+
+print(map1)
+print(map2)
+}</code></pre>
+<pre class="r"><code># running the function with a species of our choice
+# for this example, lets use King Crab
+suitable_range_fun(temp_min = 0, temp_max = 25, 
+                   depth_min = 160, depth_max = -1013, 
+                   species = &quot;King Crab&quot;)</code></pre>
+<pre><code>## [1] &quot;Total suitable area for King Crab based on sea surface temperature and depth: 1 km^2.&quot;     
+## [2] &quot;Total suitable area for King Crab based on sea surface temperature and depth: 132383 km^2.&quot;
+## [1] &quot;Suitable area for King Crab in the Central California region: 20385 km^2.&quot;
+## [1] &quot;Suitable area for King Crab in the Northern California region: 17027 km^2.&quot;
+## [1] &quot;Suitable area for King Crab in the Oregon region: 28833 km^2.&quot;
+## [1] &quot;Suitable area for King Crab in the Southern California region: 42328 km^2.&quot;
+## [1] &quot;Suitable area for King Crab in the Washington region: 23810 km^2.&quot;
+## [1] &quot;Suitable percent area for King Crab in the Central California region: 10.05%&quot;
+## [1] &quot;Suitable percent area for King Crab in the Northern California region: 10.36%&quot;
+## [1] &quot;Suitable percent area for King Crab in the Oregon region: 16.02%&quot;
+## [1] &quot;Suitable percent area for King Crab in the Southern California region: 20.46%&quot;
+## [1] &quot;Suitable percent area for King Crab in the Washington region: 35.59%&quot;
+## [1] &quot;Suitable Area for King Crab by EEZ Region&quot;</code></pre>
+<p><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-18-1.png" width="672" /><img src="Identifying_Species_Distribution_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Hall, S. J., Delaporte, A., Phillips, M. J., Beveridge,
+M. &amp; O’Keefe, M. Blue Frontiers: Managing the Environmental Costs of
+Aquaculture (The WorldFish Center, Penang, Malaysia, 2011).<a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Gentry, R. R., Froehlich, H. E., Grimm, D., Kareiva, P.,
+Parke, M., Rust, M., Gaines, S. D., &amp; Halpern, B. S. Mapping the
+global potential for marine aquaculture. <em>Nature Ecology &amp;
+Evolution</em>, 1, 1317-1324 (2017).<a href="#fnref2"
+class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>GEBCO Compilation Group (2022) GEBCO_2022 Grid (<a
+href="doi:10.5285/e0f0bb80-ab44-2739-e053-6c86abc0289c"
+class="uri">doi:10.5285/e0f0bb80-ab44-2739-e053-6c86abc0289c</a>).<a
+href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
