@@ -33,11 +33,11 @@ We will be designating maritime boundaries using Exclusive Economic Zones off of
 ## Repo Structure
 ```
 Identifying_Species_Distribution
- │   .gitignore
- └───data
+ │   data
       └─── |  average annual sst's 
            |  depth.tif
            |  wc region files
+ │   .gitignore
  │   Identifying_Species_Distribution.html
  │   Identifying_Species_Distribution.Rmd
  │   Identifying_Species_Distribution.Rproj
