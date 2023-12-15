@@ -1,5 +1,5 @@
 ---
-title: 'EDS 223: assignment 4'
+title: 'Identifying Species Distribution'
 author: "Benjamin Versteeg"
 date: "2023-12-15"
 output:
